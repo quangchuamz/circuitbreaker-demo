@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  service-b:
+    build: ./serviceB
+    ports:
+      - "8081:8081"
+
+  service-a-1:
+    build: ./serviceA
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+    depends_on:
+      - redis
+      - service-b
+
+  service-a-2:
+    build: ./serviceA
+    ports:
+      - "8082:8080"
+    environment:
+      - PORT=8080
+    depends_on:
+      - redis
+      - service-b
